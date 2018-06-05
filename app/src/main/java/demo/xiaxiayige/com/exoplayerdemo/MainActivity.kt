@@ -47,19 +47,12 @@ class MainActivity : AppCompatActivity() {
         val mediaSource1 = ExtractorMediaSource.Factory(defaultDataSourceFactory).createMediaSource(Uri.parse("http://xiaxiayige.u.qiniudn.com/Big%20Big%20World.mp3"))
         val mediaSource2 = ExtractorMediaSource.Factory(defaultDataSourceFactory).createMediaSource(Uri.parse("http://xiaxiayige.u.qiniudn.com/Let%20It%20Go%20%281%29.mp3"))
 //        concatenatingMediaSource.addMediaSource(mediaSource1)
-//        concatenatingMediaSource.addMediaSource(mediaSource2)
+//        concatenatingMediaSource.addMediaSource(mediaSource2) //添加多个媒体数据源  不可以支持动态修改数据源 可以连续播放
 
-        val mergAudio=ConcatenatingMediaSource (mediaSource1,mediaSource2) //连接多个音频，可以支持动态修改
-//        mergAudio.prepareSource(player,false,object :MediaSource.SourceInfoRefreshListener{
-//            override fun onSourceInfoRefreshed(source: MediaSource?, timeline: Timeline?, manifest: Any?) {
-//                println("source = [${source}], timeline = [${timeline}], manifest = [${manifest}]")
-//
-//            }
-//
-//        })
+        val mergAudio=ConcatenatingMediaSource (mediaSource1,mediaSource2) //连接多个音频，可以支持动态修改 可以连续播放
+
         concatenatingMediaSource.addMediaSource(mergAudio)
         player.prepare(concatenatingMediaSource)
-
 
         player.playWhenReady = true
 //        player.playbackParameters = PlaybackParameters(speed,pitch,true)
