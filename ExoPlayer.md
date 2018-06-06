@@ -464,3 +464,10 @@ ExoPlayer是Android的应用程序级媒体播放器。 它提供了Android的Me
 	3.学习了音频的裁剪，可以指定播放某一段音频数据
 	4.学习了音频的倍速播放，已经音频的声调修改
 	5.使用SeekBar实现对ExoPlayer指定播放，并且获取播放当前位置
+
+最后的最后在Activity销毁的时候别忘记释放掉player实例 
+
+	 override fun onDestroy() {
+        super.onDestroy()
+        player?.release()
+    }

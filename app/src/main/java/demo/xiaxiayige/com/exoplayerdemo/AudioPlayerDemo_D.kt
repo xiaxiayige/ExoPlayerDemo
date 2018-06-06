@@ -9,6 +9,7 @@ import android.widget.SeekBar
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.PlaybackParameters
+import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.*
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
@@ -21,11 +22,12 @@ import java.lang.ref.WeakReference
 class AudioPlayerDemo_D : AppCompatActivity() {
     var speed = 1.0f
     var pitch = 1.0f
+    lateinit var player: SimpleExoPlayer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audio_player_demo_d)
 
-        val player = ExoPlayerFactory.newSimpleInstance(this, DefaultTrackSelector())
+        player = ExoPlayerFactory.newSimpleInstance(this, DefaultTrackSelector())
         val defaultDataSourceFactory = DefaultDataSourceFactory(this, "audio/mpeg") //  userAgent -> audio/mpeg  不能为空
         val concatenatingMediaSource = ConcatenatingMediaSource() //创建一个媒体连接源
         val mediaSource1 = ExtractorMediaSource.Factory(defaultDataSourceFactory)
@@ -97,6 +99,11 @@ class AudioPlayerDemo_D : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        player?.release()
     }
 
 }
