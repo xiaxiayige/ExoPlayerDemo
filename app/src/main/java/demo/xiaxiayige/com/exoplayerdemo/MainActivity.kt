@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         val player = ExoPlayerFactory.newSimpleInstance(this, DefaultTrackSelector())
         val defaultDataSourceFactory = DefaultDataSourceFactory(this, "audio/mpeg") //  audio/mpeg
         val concatenatingMediaSource = ConcatenatingMediaSource() //创建一个媒体连接源
+
         val playHandler=PlayHandler(seekBar = seek,player =player )
 
         concatenatingMediaSource.addEventListener(playHandler,object:DefaultMediaSourceEventListener(){
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity() {
                 super.onLoadStarted(windowIndex, mediaPeriodId, loadEventInfo, mediaLoadData)
                 seek.max=player.duration.toInt()
                 playHandler.sendEmptyMessage(0)
+
             }
         })
 
@@ -51,18 +53,22 @@ class MainActivity : AppCompatActivity() {
 
         val mergAudio=ConcatenatingMediaSource (mediaSource1,mediaSource2) //连接多个音频，可以支持动态修改 可以连续播放
 
+        MergingMediaSource()
+
         concatenatingMediaSource.addMediaSource(mergAudio)
         player.prepare(concatenatingMediaSource)
 
-        player.playWhenReady = true
+//        player.playWhenReady = false
 //        player.playbackParameters = PlaybackParameters(speed,pitch,true)
         b1.setOnClickListener {
-            speed += 0.5f
-            player.playbackParameters = PlaybackParameters(speed,pitch)
+//            speed += 0.5f
+//            player.playbackParameters = PlaybackParameters(speed,pitch)
+            player.playWhenReady=true
         }
         b2.setOnClickListener {
-            pitch += 0.5f
+//            pitch += 0.5f
             player.playbackParameters =  PlaybackParameters(speed,pitch)
+            player.playWhenReady=false
         }
         player.audioAttributes.usage
     }
