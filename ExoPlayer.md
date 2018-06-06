@@ -21,7 +21,9 @@ ExoPlayer是Android的应用程序级媒体播放器。 它提供了Android的Me
 ## 2.How To Use
 如何能用才是我们关注的重点，看得到效果，才知道是不是适合我们的。
 
-接下来开始接入步骤
+首先我们至少要能让音频能够播放，我们才能做更多想做的事情，对吧，不然捣鼓半天，都不知道音频咋播放的，那真是不高兴。
+
+接下来开始接入步骤，先让音频播放起来，
 
 1.添加依赖
 
@@ -46,3 +48,39 @@ ExoPlayer是Android的应用程序级媒体播放器。 它提供了Android的Me
 	implementation 'com.google.android.exoplayer:exoplayer-ui:2.X.X'
 
 2.代码编写
+
+    
+	1-> 
+
+	获取player的一个实例，大多数情况可以直接使用 DefaultTrackSelector 
+    
+    ( DefaultTrackSelector 该类可以对当前播放的音视频进行操作，比如设置音轨，设置约束曲目选择，禁用渲染器)
+    
+    val player = ExoPlayerFactory.newSimpleInstance(this, DefaultTrackSelector())
+	
+	val defaultDataSourceFactory = DefaultDataSourceFactory(this, "audio/mpeg") //  audio/mpeg
+     
+	val concatenatingMediaSource = ConcatenatingMediaSource() //创建一个媒体连接源 
+    
+	2->
+
+	val mediaSource1 = ExtractorMediaSource.Factory(defaultDataSourceFactory)
+	.createMediaSource(Uri.parse("http://xiaxiayige.u.qiniudn.com/Big%20Big%20World.mp3")) //创建一个播放数据源
+	
+	3->
+
+	concatenatingMediaSource.addMediaSource(mediaSource1) //把数据源添加到concatenatingMediaSource里面，相当于添加到一个播放池
+	
+	4->
+
+	player.playWhenReady = true //设置属性，当准备好以后 自动开始播放
+
+	5->
+
+	 player.prepare(concatenatingMediaSource) //把Player和连接池关联起来  
+
+	6->
+
+	ok,播放的功能就这样结束了，下面看看完整代码
+
+	
